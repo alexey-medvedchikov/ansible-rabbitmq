@@ -16,3 +16,5 @@
 - include: rabbitmq.yml
   when: 'not rabbitmq_create_cluster or (ansible_hostname == rabbitmq_cluster_master)'
 
+- meta: flush_handlers
+
