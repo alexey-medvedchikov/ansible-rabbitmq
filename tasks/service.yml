@@ -1,0 +1,6 @@
+---
+# Configure RabbitMQ service
+
+- name: rabbitmq service started and enabled
+  service: name=rabbitmq-server state=started enabled=yes
+

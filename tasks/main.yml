@@ -1,0 +1,18 @@
+---
+
+- include: repository.yml
+  tags: repository
+
+- include: packages.yml
+  tags: packages
+
+- include: config.yml
+
+- include: service.yml
+
+- include: cluster.yml
+  when: 'rabbitmq_create_cluster and (ansible_hostname != rabbitmq_cluster_master)'
+
+- include: rabbitmq.yml
+  when: 'not rabbitmq_create_cluster or (ansible_hostname == rabbitmq_cluster_master)'
+
