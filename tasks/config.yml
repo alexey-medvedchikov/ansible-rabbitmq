@@ -1,22 +1,6 @@
 ---
 # Configure RabbitMQ
 
-- name: backup old erlang cookie
-  shell: cp -a /var/lib/rabbitmq/.erlang.cookie /var/lib/rabbitmq/.erlang.cookie.old
-
-- name: check if erlang cookie changed and if it is so stopping server
-  template: src=erlang.cookie.j2 dest=/var/lib/rabbitmq/.erlang.cookie.old owner=rabbitmq group=rabbitmq mode=0400
-  notify: stop rabbitmq-server
-
-- meta: flush_handlers
-
-- name: updating rabbitmq erlang cookie
-  template: src=erlang.cookie.j2 dest=/var/lib/rabbitmq/.erlang.cookie owner=rabbitmq group=rabbitmq mode=0400
-
-- name: remove old erlang cookie
-  file: path=/var/lib/rabbitmq/.erlang.cookie.old state=absent
-
 - name: rabbitmq default file
   template: src=etc/default/rabbitmq-server.j2 dest=/etc/default/rabbitmq-server owner=root group=root mode=0644
   notify: restart rabbitmq-server
-
