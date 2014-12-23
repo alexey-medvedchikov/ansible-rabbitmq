@@ -6,8 +6,9 @@ This role configures RabbitMQ cluster.
 Requirements
 ------------
 
-Clustering requires proper short hostname resolution on every node in cluster. All other requirements
-are listed in metadata file.
+Clustering requires proper short hostname resolution on every node in cluster.
+Use some /etc/hosts setup role for this. All other requirements are listed in
+metadata file.
 
 Role Variables
 --------------
@@ -15,17 +16,68 @@ Role Variables
 The variables that can be passed to this role and a brief description about
 them are as follows.
 
-	# TODO
+	# Set /var/lib/rabbitmq/.erlang.cookie
+	rabbitmq_erlang_cookie: 1qa2ws3ed
+
+	# Set max open files for rabbit process 
+	rabbitmq_ulimit_open_files: 1024
+
+	# Use cluster or no
+	rabbitmq_create_cluster: no
+
+	# Short hostname of cluster master, on master node it must be specified too
+	rabbitmq_cluster_master: localhost
+
+	# Vhosts to create
+	rabbitmq_vhosts: []
+
+	# Enabled plugins
+	rabbitmq_plugins:
+	  - rabbitmq_management
+
+	# Users to create, self explained parameters
+	rabbitmq_users:
+	  - user: admin
+	    password: admin
+	    vhost: /
+	    configure_priv: .*
+	    read_priv: .*
+	    write_priv: .*
+	    tags: administrator
+
+	# Users to remove
+	rabbitmq_users_removed:
+	  - guest
 
 Examples
 --------
 
-TODO
+	[rabbidz]
+	mq1.local rabbitmq_cluster_master=mq2
+	mq2.local rabbitmq_cluster_master=mq2
+	mq3.local rabbitmq_cluster_master=mq3
+	mq4.local rabbitmq_cluster_master=mq3
 
-Dependencies
-------------
+	[rabbidz:vars]
+	rabbitmq_create_cluster=yes
 
-None
+or you can use group variables (preferably)
+
+	[rabbidz1]
+	mq1.local
+	mq2.local
+
+	[rabbidz1:vars]
+	rabbitmq_create_cluster=yes
+	rabbitmq_cluster_master=mq3
+
+	[rabbidz2]
+	mq3.local
+	mq4.local
+
+	[rabbidz2:vars]
+	rabbitmq_create_cluster=yes
+	rabbitmq_cluster_master=mq3
 
 License
 -------
