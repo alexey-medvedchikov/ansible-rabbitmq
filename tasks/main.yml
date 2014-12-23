@@ -6,6 +6,9 @@
 - include: packages.yml
   tags: packages
 
+- include: config-cluster.yml
+  when: rabbitmq_create_cluster
+
 - include: config.yml
 
 - include: service.yml
@@ -17,4 +20,3 @@
   when: 'not rabbitmq_create_cluster or (ansible_hostname == rabbitmq_cluster_master)'
 
 - meta: flush_handlers
-
