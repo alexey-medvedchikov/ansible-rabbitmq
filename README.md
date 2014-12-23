@@ -52,6 +52,15 @@ them are as follows.
 Examples
 --------
 
+First of all you need configure /etc/hosts:
+
+	[all]
+	hosts:
+	  - { ip: '10.0.0.1', domain: 'mq1' }
+	  - { ip: '10.0.0.2', domain: 'mq2' }
+	  - { ip: '10.0.0.3', domain: 'mq3' }
+	  - { ip: '10.0.0.4', domain: 'mq4' }
+
 	[rabbidz]
 	mq1.local rabbitmq_cluster_master=mq2
 	mq2.local rabbitmq_cluster_master=mq2
