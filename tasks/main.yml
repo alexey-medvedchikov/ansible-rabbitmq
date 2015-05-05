@@ -1,6 +1,7 @@
 ---
 
 - include: repository.yml
+  when: rabbitmq_use_upstream_repository
   tags: repository
 
 - include: packages.yml
