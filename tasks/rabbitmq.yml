@@ -4,10 +4,12 @@
 - name: Ensure the users is removed
   rabbitmq_user: user="{{ item }}" state=absent
   with_items: rabbitmq_users_removed
+  tags: [configuration,rabbitmq]
 
 - name: Ensure the vhosts is present
   rabbitmq_vhost: name="{{ item }}"
   with_items: rabbitmq_vhosts
+  tags: [configuration,rabbitmq]
 
 - name: Ensure the users is present
   rabbitmq_user:
@@ -19,12 +21,15 @@
     vhost: "{{ item.vhost|default('/') }}"
     tags: "{{ item.tags|default('') }}"
   with_items: rabbitmq_users
+  tags: [configuration,rabbitmq]
 
 - name: Symlink RabbitMQ bin to sbin
   file: state=link src=/usr/lib/rabbitmq/bin dest=/usr/lib/rabbitmq/sbin
+  tags: [configuration,rabbitmq]
 
 - name: Enable the plugins is installed
   rabbitmq_plugin: names="{{ item }}" state=enabled prefix=/usr/lib/rabbitmq
   with_items: rabbitmq_plugins
   notify: restart rabbitmq-server
+  tags: [configuration,rabbitmq]
 
