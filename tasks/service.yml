@@ -3,4 +3,5 @@
 
 - name: rabbitmq service started and enabled
   service: name=rabbitmq-server state=started enabled=yes
+  tags: [service,rabbitmq]
 

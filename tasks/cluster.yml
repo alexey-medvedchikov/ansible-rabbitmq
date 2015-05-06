@@ -3,16 +3,21 @@
 
 - name: start rabbitmq server
   service: name=rabbitmq-server state=started
+  tags: [service,rabbitmq]
 
 - name: stop rabbitmq app
   shell: rabbitmqctl stop_app
+  tags: rabbitmq
 
 - name: resetting rabbitmq app
   shell: rabbitmqctl reset
+  tags: rabbitmq
 
 - name: add this node to cluster
   shell: rabbitmqctl join_cluster rabbit@{{ rabbitmq_cluster_master }}
+  tags: rabbitmq
 
 - name: start rabbitmq app
   shell: rabbitmqctl start_app
+  tags: rabbitmq
 

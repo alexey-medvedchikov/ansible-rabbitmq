@@ -1,10 +1,11 @@
 ---
 
 - include: repository.yml
-  tags: repository
+  when: rabbitmq_use_upstream_repository
+  tags: [repository,rabbitmq]
 
 - include: packages.yml
-  tags: packages
+  tags: [packages,rabbitmq]
 
 - include: config-cluster.yml
   when: rabbitmq_create_cluster
