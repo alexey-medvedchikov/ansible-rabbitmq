@@ -5,7 +5,7 @@ rabbitmq_erlang_cookie: 1qa2ws3ed
 rabbitmq_ulimit_open_files: 1024
 rabbitmq_create_cluster: no
 rabbitmq_cluster_master: localhost
-rabbitmq_use_longname: false
+rabbitmq_use_longname: 'false'
 rabbitmq_vhosts: []
 
 rabbitmq_plugins:
