@@ -5,3 +5,8 @@
   template: src=etc/default/rabbitmq-server.j2 dest=/etc/default/rabbitmq-server owner=root group=root mode=0644
   notify: restart rabbitmq-server
   tags: [configuration,rabbitmq]
+
+- name: rabbitmq environment variables
+  template: src=etc/rabbitmq/rabbitmq-env.j2 dest=/etc/rabbitmq/rabbitmq-env.conf owner=root group=root mode=0644
+  notify: restart rabbitmq-server
+  tags: [configuration,rabbitmq]   
