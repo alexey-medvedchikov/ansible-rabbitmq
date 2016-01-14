@@ -15,7 +15,7 @@
 - include: service.yml
 
 - include: cluster.yml
-  when: 'rabbitmq_create_cluster and (ansible_hostname != rabbitmq_cluster_master) and (ansible_fqdn != rabbitmq_cluster_master')
+  when: 'rabbitmq_create_cluster and (ansible_hostname != rabbitmq_cluster_master) and (ansible_fqdn != rabbitmq_cluster_master)'
 
 - include: rabbitmq.yml
   when: 'not rabbitmq_create_cluster or (ansible_hostname == rabbitmq_cluster_master) or (ansible_fqdn != rabbitmq_cluster_master)'
