@@ -24,7 +24,10 @@
   tags: [configuration,rabbitmq]
 
 - name: ensure the default vhost contains the HA policy
-  rabbitmq_policy: name=HA pattern='{{rabbitmq_ha_pattern}}'' tags="ha-mode={{rabbitmq_ha_mode}"
+  rabbitmq_policy: name=HA pattern='{{ rabbitmq_ha_pattern }}'
+  args:
+   tags:
+    "ha-mode": '{{ rabbitmq_ha_mode }}'
   when: rabbitmq_create_cluster and rabbitmq_ha_enabled
 
 - name: Symlink RabbitMQ bin to sbin
