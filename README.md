@@ -1,7 +1,7 @@
 rabbitmq
 ======
 
-This role configures RabbitMQ cluster.
+This role configures RabbitMQ cluster. This playbook is derived from alexeymedvedchikov.rabbitmq but adds the ability to use FQDN.
 
 Requirements
 ------------
