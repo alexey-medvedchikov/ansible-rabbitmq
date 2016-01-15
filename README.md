@@ -1,7 +1,7 @@
 rabbitmq
 ======
 
-This role configures RabbitMQ cluster.
+This role configures RabbitMQ cluster. This playbook is derived from alexeymedvedchikov.rabbitmq but adds the ability to use FQDN.
 
 Requirements
 ------------
@@ -48,6 +48,9 @@ them are as follows.
 	# Users to remove
 	rabbitmq_users_removed:
 	  - guest
+
+       # Use FQDN
+       rabbitmq_use_longname: 'true'
 
 Examples
 --------
