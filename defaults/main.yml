@@ -11,6 +11,13 @@ rabbitmq_ha_enabled: no
 rabbitmq_ha_pattern: '.*'
 rabbitmq_ha_mode: 'all'
 
+rabbitmq_ssl: no
+rabbitmq_ssl_port: 5671
+rabbitmq_ssl_use_snakeoil_cert: yes
+rabbitmq_ssl_ca_cert:
+rabbitmq_ssl_cert:
+rabbitmq_ssl_key:
+
 rabbitmq_plugins:
   - rabbitmq_management
 

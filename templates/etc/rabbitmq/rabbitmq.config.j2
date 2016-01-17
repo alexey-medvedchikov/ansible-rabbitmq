@@ -1,0 +1,21 @@
+[
+  {rabbit, [
+{% if rabbitmq_ssl %}
+     {ssl_listeners, [{{ rabbitmq_ssl_port }}]},
+     {ssl_options, [
+{% if rabbitmq_ssl_use_snakeoil_cert %}
+        {cacertfile,"/etc/ssl/certs/ssl-cert-snakeoil.pem"},
+        {certfile,"/etc/ssl/certs/ssl-cert-snakeoil.pem"},
+        {keyfile,"/etc/ssl/private/ssl-cert-snakeoil.key"},
+        {verify,verify_none},
+        {fail_if_no_peer_cert,false}]}
+{% else %}
+        {cacertfile,"{{ rabbitmq_ssl_ca_cert }}"},
+        {certfile,"{{ rabbitmq_ssl_cert }}"},
+        {keyfile,"{{ rabbitmq_ssl_key }}"},
+        {verify,verify_peer},
+        {fail_if_no_peer_cert,true}]}
+{% endif %}
+{% endif %}
+   ]}
+].
