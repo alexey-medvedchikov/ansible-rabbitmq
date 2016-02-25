@@ -19,8 +19,6 @@
   ignore_errors: True
   tags: rabbitmq
 
-- debug: msg="Join cluster output {{ join_cluster_output }}"
-
 - name: skip fail if the node is already a member of the cluster
   fail: msg="join_cluster failed but node is not already a member"
   when: ("'already_member' not in join_cluster_output.stderr") and
