@@ -15,7 +15,14 @@
 
 - name: add this node to cluster
   shell: rabbitmqctl join_cluster rabbit@{{ rabbitmq_cluster_master }}
+  register: join_cluster_output
+  ignore_errors: True
   tags: rabbitmq
+
+- name: skip fail if the node is already a member of the cluster
+  fail: msg="join_cluster failed but node is not already a member"
+  when: ("'already_member' not in join_cluster_output.stderr") and
+        (join_cluster_output.rc == 1)
 
 - name: start rabbitmq app
   shell: rabbitmqctl start_app
