@@ -2,7 +2,8 @@
 # Setup installation repositories
 
 - name: import repository key
-  apt_key: url=https://www.rabbitmq.com/rabbitmq-release-signing-key.asc state=present
+  apt_key: keyserver=hkps.pool.sks-keyservers.net id=0x6B73A36E6026DFCA
+
 
 - name: add apt repository
   apt_repository: repo="deb http://www.rabbitmq.com/debian/ testing main"
