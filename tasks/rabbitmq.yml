@@ -3,12 +3,12 @@
 
 - name: Ensure the users is removed
   rabbitmq_user: user="{{ item }}" state=absent
-  with_items: rabbitmq_users_removed
+  with_items: "{{ rabbitmq_users_removed }}"
   tags: [configuration,rabbitmq]
 
 - name: Ensure the vhosts is present
   rabbitmq_vhost: name="{{ item }}"
-  with_items: rabbitmq_vhosts
+  with_items: "{{ rabbitmq_vhosts }}"
   tags: [configuration,rabbitmq]
 
 - name: Ensure the users is present
@@ -20,7 +20,7 @@
     write_priv: "{{ item.write_priv|default('.*') }}"
     vhost: "{{ item.vhost|default('/') }}"
     tags: "{{ item.tags|default('') }}"
-  with_items: rabbitmq_users
+  with_items: "{{ rabbitmq_users }}"
   tags: [configuration,rabbitmq]
 
 - name: ensure the default vhost contains the HA policy
@@ -36,7 +36,7 @@
 
 - name: Enable the plugins is installed
   rabbitmq_plugin: names="{{ item }}" state=enabled prefix=/usr/lib/rabbitmq
-  with_items: rabbitmq_plugins
+  with_items: "{{ rabbitmq_plugins }}"
   notify: restart rabbitmq-server
   tags: [configuration,rabbitmq]
 
