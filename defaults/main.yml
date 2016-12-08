@@ -11,6 +11,10 @@ rabbitmq_use_longname: 'false'
 rabbitmq_logrotate_period: weekly
 rabbitmq_logrotate_amount: 20
 
+rabbitmq_amqp_port: 5672
+rabbitmq_epmd_port: 4369
+rabbitmq_node_port: 25672
+
 rabbitmq_instant_queues: false
 rabbitmq_instant_shovels: false
 
@@ -46,4 +50,3 @@ rabbitmq_shovels:
   -
     shovel_name:
     shovel_json: ''
-
