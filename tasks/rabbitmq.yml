@@ -21,6 +21,7 @@
     vhost: "{{ item.vhost|default('/') }}"
     tags: "{{ item.tags|default('') }}"
   with_items: "{{ rabbitmq_users }}"
+  no_log: true
   tags: [configuration,rabbitmq]
 
 - name: ensure the default vhost contains the HA policy
