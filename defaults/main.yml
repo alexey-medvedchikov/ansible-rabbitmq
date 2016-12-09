@@ -3,6 +3,7 @@
 rabbitmq_use_upstream_repository: true
 rabbitmq_erlang_cookie: 1qa2ws3ed
 rabbitmq_ulimit_open_files: 1024
+rabbitmq_memory_high_watermark: 0.4
 rabbitmq_create_cluster: no
 rabbitmq_cluster_master: localhost
 rabbitmq_use_longname: 'false'

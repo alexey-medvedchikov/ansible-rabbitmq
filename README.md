@@ -22,6 +22,9 @@ them are as follows.
 	# Set max open files for rabbit process 
 	rabbitmq_ulimit_open_files: 1024
 
+	# Set the memory threshold at which the flow control is triggered
+	rabbitmq_memory_high_watermark: 0.4
+
 	# Use cluster or no
 	rabbitmq_create_cluster: no
 
