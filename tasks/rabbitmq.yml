@@ -2,14 +2,16 @@
 # RabbitMQ user and vhost management
 
 - name: Ensure the users is removed
-  rabbitmq_user: user="{{ item }}" state=absent
+  rabbitmq_user:
+    user: "{{ item }}"
+    state: absent
   with_items: "{{ rabbitmq_users_removed }}"
-  tags: [configuration,rabbitmq]
 
 - name: Ensure the vhosts is present
-  rabbitmq_vhost: name="{{ item }}"
+  rabbitmq_vhost:
+    name: "{{ item }}"
+    state: present
   with_items: "{{ rabbitmq_vhosts }}"
-  tags: [configuration,rabbitmq]
 
 - name: Ensure the users is present
   rabbitmq_user:
@@ -21,22 +23,23 @@
     vhost: "{{ item.vhost|default('/') }}"
     tags: "{{ item.tags|default('') }}"
   with_items: "{{ rabbitmq_users }}"
-  tags: [configuration,rabbitmq]
 
-- name: ensure the default vhost contains the HA policy
-  rabbitmq_policy: name=HA pattern='{{ rabbitmq_ha_pattern }}'
-  args:
-   tags:
-    "ha-mode": '{{ rabbitmq_ha_mode }}'
-  when: rabbitmq_create_cluster and rabbitmq_ha_enabled
+- name: Ensure rabbitmqadmin script is present
+  copy:
+    src: rabbitmqadmin
+    dest: /usr/local/bin
+    mode: 0755
+  when: "{{ rabbitmq_instant_queues }}"
 
-- name: Symlink RabbitMQ bin to sbin
-  file: state=link src=/usr/lib/rabbitmq/bin dest=/usr/lib/rabbitmq/sbin
-  tags: [configuration,rabbitmq]
+- name: Ensure requared queues are present
+  shell: rabbitmqadmin --username={{ item.0.user }} --password={{ item.0.password }} --vhost={{ item.0.vhost_name }} declare queue name={{ item.1 }} durable={{ item.0.durable }}
+  with_subelements:
+    - "{{ rabbitmq_vhosts_queues }}"
+    - queues
+  when: rabbitmq_instant_queues
 
-- name: Enable the plugins is installed
-  rabbitmq_plugin: names="{{ item }}" state=enabled prefix=/usr/lib/rabbitmq
-  with_items: "{{ rabbitmq_plugins }}"
-  notify: restart rabbitmq-server
-  tags: [configuration,rabbitmq]
-
+- name: Make a shovle for for queues
+  shell: rabbitmqctl set_parameter shovel {{ item.shovel_name }} '{{ item.shovel_json }}'
+  with_items:
+    - "{{ rabbitmq_shovels }}"
+  when: rabbitmq_instant_shovels

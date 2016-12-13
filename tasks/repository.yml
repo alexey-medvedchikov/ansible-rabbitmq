@@ -1,10 +1,15 @@
 ---
 # Setup installation repositories
+# Standart repository for Debian / Ubuntu (http://www.rabbitmq.com/install-debian.html)
 
 - name: import repository key
-  apt_key: keyserver=hkps.pool.sks-keyservers.net id=0x6B73A36E6026DFCA
-
+  apt_key:
+    url: http://www.rabbitmq.com/rabbitmq-signing-key-public.asc
+    state: present
 
 - name: add apt repository
-  apt_repository: repo="deb http://www.rabbitmq.com/debian/ testing main"
-    state=present update_cache=yes
+  apt_repository:
+    repo: "deb http://www.rabbitmq.com/debian/ testing main"
+    update_cache: yes
+    state: present
+
