@@ -1,17 +1,38 @@
 ---
 # Configure RabbitMQ
 
-- name: rabbitmq config file
-  template: src=etc/rabbitmq/rabbitmq.config.j2 dest=/etc/rabbitmq/rabbitmq.config owner=root group=root mode=0644
-  notify: restart rabbitmq-server
-  tags: [configuration,rabbitmq]
-
 - name: rabbitmq default file
-  template: src=etc/default/rabbitmq-server.j2 dest=/etc/default/rabbitmq-server owner=root group=root mode=0644
-  notify: restart rabbitmq-server
-  tags: [configuration,rabbitmq]
+  template:
+    src: etc/default/rabbitmq-server.j2
+    dest: /etc/default/rabbitmq-server
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    restart rabbitmq-server
 
-- name: rabbitmq environment variables
-  template: src=etc/rabbitmq/rabbitmq-env.j2 dest=/etc/rabbitmq/rabbitmq-env.conf owner=root group=root mode=0644
-  notify: restart rabbitmq-server
-  tags: [configuration,rabbitmq]   
+- name: default settings for RabbitMQ AMQP server
+  template:
+    src: etc/rabbitmq/rabbitmq-env.conf.j2
+    dest: /etc/rabbitmq/rabbitmq-env.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    restart rabbitmq-server
+
+- name: Symlink RabbitMQ bin to sbin(for install plugins)
+  file:
+    src: /usr/lib/rabbitmq/bin
+    dest: /usr/lib/rabbitmq/sbin
+    state: link
+
+- name: Enable the plugins is installed
+  rabbitmq_plugin:
+    names: "{{ item }}"
+    prefix: /usr/lib/rabbitmq
+    state: enabled
+    new_only: yes
+  with_items: "{{ rabbitmq_plugins }}"
+  notify:
+    restart rabbitmq-server

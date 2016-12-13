@@ -3,13 +3,10 @@
 
 - name: restart rabbitmq-server
   service: name=rabbitmq-server state=restarted
-  tags: rabbitmq
 
 - name: start rabbitmq-server
   service: name=rabbitmq-server state=started
-  tags: rabbitmq
 
 - name: stop rabbitmq-server
   service: name=rabbitmq-server state=stopped
-  tags: rabbitmq
 
