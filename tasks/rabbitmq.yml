@@ -21,6 +21,7 @@
     read_priv: "{{ item.read_priv|default('.*') }}"
     write_priv: "{{ item.write_priv|default('.*') }}"
     vhost: "{{ item.vhost|default('/') }}"
+    permissions: "{{ item.permissions|default(omit) }}"
     tags: "{{ item.tags|default('') }}"
   with_items: "{{ rabbitmq_users }}"
 
