@@ -103,4 +103,3 @@ Author Information
 ------------------
 
 - Alexey Medvedchikov, 2GIS, LLC
-
