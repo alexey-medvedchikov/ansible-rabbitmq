@@ -1,13 +1,14 @@
 rabbitmq
 ======
 
-This role configures RabbitMQ cluster.
+This role configures RabbitMQ cluster. This playbook is derived from alexeymedvedchikov.rabbitmq but adds the ability to use FQDN.
 
 Requirements
 ------------
 
-Clustering requires proper short hostname resolution on every node in cluster. All other requirements
-are listed in metadata file.
+Clustering requires proper short hostname resolution on every node in cluster.
+Use some /etc/hosts setup role for this. All other requirements are listed in
+metadata file.
 
 Role Variables
 --------------
@@ -15,63 +16,80 @@ Role Variables
 The variables that can be passed to this role and a brief description about
 them are as follows.
 
-* `rabbitmq_erlang_cookie` - кукиса для erlang. В кластерной схеме - должна быть одинакова на всех машинах. 
- * Значение по умолчанию - **1qa2ws3ed**
+	# Set /var/lib/rabbitmq/.erlang.cookie
+	rabbitmq_erlang_cookie: 1qa2ws3ed
 
-* `rabbitmq_create_cluster` - Будет ли мы создавать кластер RabbitMQ или все инстансы будут независимыми
- * Значение по умолчанию - **false**
+	# Set max open files for rabbit process 
+	rabbitmq_ulimit_open_files: 1024
 
-* `rabbitmq_cluster_master` - указывается Мастер-сервер rabbitmq, к которому будут подключаться другие RabbitMQ сервера при инициализации кластера
- * Значение по умолчанию - **localhost**
+	# Use cluster or no
+	rabbitmq_create_cluster: no
 
-* `rabbitmq_use_longname` - использовать полные DNS имена. При настройке в 2Gis - требуется указывать 'true'
- * Значение по умолчанию(не используется) - **'false'**
+	# Short hostname of cluster master, on master node it must be specified too
+	rabbitmq_cluster_master: localhost
 
-`Доработать этот раздел`
+	# Vhosts to create
+	rabbitmq_vhosts: []
 
+	# Enabled plugins
+	rabbitmq_plugins:
+	  - rabbitmq_management
+
+	# Users to create, self explained parameters
+	rabbitmq_users:
+	  - user: admin
+	    password: admin
+	    vhost: /
+	    configure_priv: .*
+	    read_priv: .*
+	    write_priv: .*
+	    tags: administrator
+
+	# Users to remove
+	rabbitmq_users_removed:
+	  - guest
+
+       # Use FQDN
+       rabbitmq_use_longname: 'true'
 
 Examples
 --------
 
-Плейбук:
-```yml
----
-- hosts: rabbitmq
-  sudo: yes
-  roles:
-    - rabbitmq
-```
+First of all you need configure /etc/hosts:
 
-Параметры:
-```yml
-rabbitmq_users:
-  - user: admin
-    password: passw0rd
-    vhost: /
-    configure_priv: .*
-    read_priv: .*
-    write_priv: .*
-    tags: administrator
+	[all]
+	hosts:
+	  - { ip: '10.0.0.1', domain: 'mq1' }
+	  - { ip: '10.0.0.2', domain: 'mq2' }
+	  - { ip: '10.0.0.3', domain: 'mq3' }
+	  - { ip: '10.0.0.4', domain: 'mq4' }
 
+	[rabbidz]
+	mq1.local rabbitmq_cluster_master=mq2
+	mq2.local rabbitmq_cluster_master=mq2
+	mq3.local rabbitmq_cluster_master=mq3
+	mq4.local rabbitmq_cluster_master=mq3
 
-rabbitmq_erlang_cookie: ghwjkhguw324vhsdjk
-rabbitmq_ulimit_open_files: 1024
-rabbitmq_create_cluster: true
-rabbitmq_cluster_master: mq1.rabbitmq.m1.nato
-rabbitmq_enabled: yes
-rabbitmq_use_longname: 'true'
+	[rabbidz:vars]
+	rabbitmq_create_cluster=yes
 
-rabbitmq_plugins:
-  - rabbitmq_management
-  - rabbitmq_management_agent
-  - rabbitmq_shovel
-  - rabbitmq_shovel_management
-```
+or you can use group variables (preferably)
 
-Dependencies
-------------
+	[rabbidz1]
+	mq1.local
+	mq2.local
 
-None
+	[rabbidz1:vars]
+	rabbitmq_create_cluster=yes
+	rabbitmq_cluster_master=mq3
+
+	[rabbidz2]
+	mq3.local
+	mq4.local
+
+	[rabbidz2:vars]
+	rabbitmq_create_cluster=yes
+	rabbitmq_cluster_master=mq3
 
 License
 -------
