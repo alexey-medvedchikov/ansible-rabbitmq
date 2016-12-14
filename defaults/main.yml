@@ -2,7 +2,8 @@
 
 rabbitmq_erlang_cookie: 1qa2ws3ed
 rabbitmq_ulimit_open_files: 1024
-rabbitmq_create_cluster: false
+rabbitmq_memory_high_watermark: 0.4
+rabbitmq_create_cluster: no
 rabbitmq_cluster_master: localhost
 rabbitmq_vhosts: []
 rabbitmq_use_longname: 'false'
