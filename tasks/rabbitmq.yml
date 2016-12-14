@@ -24,6 +24,8 @@
     permissions: "{{ item.permissions|default(omit) }}"
     tags: "{{ item.tags|default('') }}"
   with_items: "{{ rabbitmq_users }}"
+  no_log: true
+  tags: [configuration,rabbitmq]
 
 - name: Ensure rabbitmqadmin script is present
   copy:
