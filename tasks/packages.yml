@@ -2,14 +2,19 @@
 # Install required packages
 
 - name: install required packages
-  apt: pkg={{ item }} state=present
+  apt:
+    update_cache: yes
+    force: yes
+    pkg: "{{ item }}"
+    state: present
   with_items:
     - rabbitmq-server
 
-- name: install ssl-cert
-  apt: pkg=ssl-cert state=present
-  when: rabbitmq_ssl and rabbitmq_ssl_use_snakeoil_cert
-
-- name: add rabbitmq user to the ssl-cert group
-  user: name=rabbitmq append=yes groups=ssl-cert
-  when: rabbitmq_ssl and rabbitmq_ssl_use_snakeoil_cert
+- name: customize logrotate rules
+  template:
+    src: etc/logrotate.d/rabbitmq-server.j2
+    dest: /etc/logrotate.d/rabbitmq-server
+    owner: root
+    group: root
+    mode: 0644
+  tags: ['rabbitmq', 'rabbitmq-logrotate']

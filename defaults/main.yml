@@ -1,25 +1,22 @@
 ---
 
-rabbitmq_use_upstream_repository: true
 rabbitmq_erlang_cookie: 1qa2ws3ed
 rabbitmq_ulimit_open_files: 1024
+rabbitmq_memory_high_watermark: 0.4
 rabbitmq_create_cluster: no
 rabbitmq_cluster_master: localhost
-rabbitmq_use_longname: 'false'
 rabbitmq_vhosts: []
-rabbitmq_ha_enabled: no
-rabbitmq_ha_pattern: '.*'
-rabbitmq_ha_mode: 'all'
+rabbitmq_use_longname: 'false'
 
-rabbitmq_ssl: no
-rabbitmq_ssl_port: 5671
-rabbitmq_ssl_use_snakeoil_cert: yes
-rabbitmq_ssl_ca_cert:
-rabbitmq_ssl_cert:
-rabbitmq_ssl_key:
+rabbitmq_logrotate_period: weekly
+rabbitmq_logrotate_amount: 20
+
+rabbitmq_instant_queues: false
+rabbitmq_instant_shovels: false
 
 rabbitmq_plugins:
   - rabbitmq_management
+  - rabbitmq_management_agent
 
 rabbitmq_users:
   - user: admin
@@ -32,4 +29,21 @@ rabbitmq_users:
 
 rabbitmq_users_removed:
   - guest
+
+rabbitmq_vhosts_queues:
+  - vhost_name:
+    queues: []
+    user:
+    password:
+    durable: 'true'
+
+##   Requares additional plugin enabled: rabbitmq_shovel
+##   See https://www.rabbitmq.com/shovel-dynamic.html for json format
+rabbitmq_shovels:
+  -
+    shovel_name:
+    shovel_json: ''
+  -
+    shovel_name:
+    shovel_json: ''
 

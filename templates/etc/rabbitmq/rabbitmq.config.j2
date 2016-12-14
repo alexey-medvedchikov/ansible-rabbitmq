@@ -1,6 +1,7 @@
 [
   {rabbit, [
-{% if rabbitmq_ssl %}
+     {vm_memory_high_watermark, {{ rabbitmq_memory_high_watermark }}}
+{% if rabbitmq_ssl %},
      {ssl_listeners, [{{ rabbitmq_ssl_port }}]},
      {ssl_options, [
 {% if rabbitmq_ssl_use_snakeoil_cert %}

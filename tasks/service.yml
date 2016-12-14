@@ -2,6 +2,9 @@
 # Configure RabbitMQ service
 
 - name: rabbitmq service started and enabled
-  service: name=rabbitmq-server state=started enabled=yes
-  tags: [service,rabbitmq]
+  service:
+    name: rabbitmq-server
+    enabled: yes
+    state: started
+
 
