@@ -8,3 +8,5 @@
 #
 ulimit -n {{ rabbitmq_ulimit_open_files }}
 
+ERL_EPMD_PORT={{ rabbitmq_epmd_port }}
+RABBITMQ_NODE_PORT= {{ rabbitmq_node_port }}
